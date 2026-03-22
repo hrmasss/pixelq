@@ -1,0 +1,46 @@
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/service/bin/
+/service/vendor/
+
+# SQLite
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Build outputs
+build/
+dist/
+releases/
+*.zip
+
+# Dependencies
+node_modules/
+deps/
+.pnpm-store/
+.tmp/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local config
+.env
+.env.local
+tmp_queue_*.json
+
+# Reference files (keep but don't track changes)
+# .references/
