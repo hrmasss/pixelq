@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelQ</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <img class="brand-mark" src="../icons/icon128.png" alt="PixelQ">
+        <div class="brand-copy">
+          <h1>PixelQ</h1>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <div id="chatgpt-status" class="footer-status">
+          <span class="status-dot"></span>
+          <span>No platform active</span>
+        </div>
+        <div id="connection-status" class="status-pill">
+          <span class="status-dot"></span>
+          <span class="status-text">Bridge</span>
+        </div>
+        <div id="queue-strip" class="status-strip top-status-strip"></div>
+      </div>
+    </header>
+
+    <nav class="tabbar" aria-label="Primary">
+      <button class="tab active" data-tab="queue" type="button">
+        <span class="icon-slot" data-icon="queue"></span>
+        <span>Queue</span>
+      </button>
+      <button class="tab" data-tab="create" type="button">
+        <span class="icon-slot" data-icon="add"></span>
+        <span>Create</span>
+      </button>
+      <button class="tab" data-tab="settings" type="button">
+        <span class="icon-slot" data-icon="settings"></span>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <main class="panel-stack">
+      <section id="tab-queue" class="panel active" aria-label="Queue">
+        <header class="panel-header">
+          <div>
+            <p class="eyebrow">Worker view</p>
+            <h2>Queue</h2>
+          </div>
+          <div class="panel-header-actions">
+            <button id="btn-refresh" class="icon-button" type="button" title="Refresh" aria-label="Refresh">
+              <span class="icon-slot" data-icon="refresh"></span>
+            </button>
+            <button id="btn-start" class="icon-button" type="button" title="Start queue" aria-label="Start queue">
+              <span class="icon-slot" data-icon="play"></span>
+            </button>
+            <button id="btn-pause" class="icon-button" type="button" title="Pause queue" aria-label="Pause queue">
+              <span class="icon-slot" data-icon="pause"></span>
+            </button>
+            <button id="btn-archive" class="icon-button" type="button" title="Archive completed" aria-label="Archive completed">
+              <span class="icon-slot" data-icon="archive"></span>
+            </button>
+          </div>
+        </header>
+
+        <div id="queue-stats" class="stats-row"></div>
+
+        <section class="surface">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Live work</p>
+              <h3>Active now</h3>
+            </div>
+            <span id="active-count" class="mini-pill">0</span>
+          </div>
+          <div id="active-list" class="list-stack" aria-live="polite"></div>
+        </section>
+
+        <section class="surface">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Queue depth</p>
+              <h3>Up next</h3>
+            </div>
+            <span id="backlog-count" class="mini-pill">0</span>
+          </div>
+          <div id="backlog-list" class="list-stack" aria-live="polite"></div>
+        </section>
+
+        <details class="surface" open>
+          <summary class="section-title summary-title">
+            <div>
+              <p class="eyebrow">Recent results</p>
+              <h3>History</h3>
+            </div>
+            <span id="history-count" class="mini-pill">0</span>
+          </summary>
+          <div id="history-list" class="list-stack compact"></div>
+        </details>
+      </section>
+
+      <section id="tab-create" class="panel" aria-label="Create">
+        <header class="panel-header">
+          <div>
+            <p class="eyebrow">Queue work</p>
+            <h2>Create</h2>
+          </div>
+        </header>
+
+        <div class="segment-control" aria-label="Create modes">
+          <button class="segment active" data-create-mode="quick" type="button">Quick</button>
+          <button class="segment" data-create-mode="batch" type="button">Batch</button>
+        </div>
+
+        <section id="create-quick" class="subpanel active surface">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Single run</p>
+              <h3>Quick prompt</h3>
+            </div>
+          </div>
+          <div class="field-grid">
+            <label class="field">
+              <span>Project</span>
+              <input id="quick-project" type="text" placeholder="Optional label">
+            </label>
+            <label class="field">
+              <span>Template</span>
+              <select id="quick-template"></select>
+            </label>
+          </div>
+          <div id="quick-manual-group" class="field-group">
+            <label class="field">
+              <span>Prompt</span>
+              <textarea id="quick-prompt" rows="5" placeholder="Describe the image you want to queue."></textarea>
+            </label>
+          </div>
+          <div id="quick-template-group" class="field-group hidden">
+            <div id="quick-template-meta" class="hint-box"></div>
+            <div id="quick-template-fields" class="field-grid"></div>
+            <div id="quick-preview" class="preview-box"></div>
+          </div>
+          <div class="footer-row">
+            <span id="quick-summary" class="muted-copy">Manual prompt mode.</span>
+            <button id="quick-submit" class="toolbar-button toolbar-button-primary" type="button">
+              <span class="icon-slot" data-icon="arrow-up"></span>
+              <span>Queue quick</span>
+            </button>
+          </div>
+        </section>
+
+        <section id="create-batch" class="subpanel surface">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Multi-run</p>
+              <h3>Batch queue</h3>
+            </div>
+          </div>
+          <div class="field-grid">
+            <label class="field">
+              <span>Project</span>
+              <input id="batch-project" type="text" placeholder="Optional label">
+            </label>
+            <label class="field">
+              <span>Template</span>
+              <select id="batch-template"></select>
+            </label>
+          </div>
+          <div id="batch-manual-group" class="field-group">
+            <label class="field">
+              <span>Prompt batch</span>
+              <textarea id="batch-lines" rows="7" placeholder="One prompt per line."></textarea>
+            </label>
+          </div>
+          <div id="batch-template-group" class="field-group hidden">
+            <div id="batch-template-meta" class="hint-box"></div>
+            <label class="field">
+              <span>CSV file</span>
+              <input id="batch-file" type="file" accept=".csv,text/csv">
+            </label>
+            <div id="batch-columns" class="chip-row"></div>
+            <div id="batch-summary" class="preview-box"></div>
+          </div>
+          <div class="footer-row">
+            <span id="batch-footer-copy" class="muted-copy">Each non-empty line becomes one queued job.</span>
+            <button id="batch-submit" class="toolbar-button toolbar-button-primary" type="button">
+              <span class="icon-slot" data-icon="file-upload"></span>
+              <span>Queue batch</span>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <section id="tab-settings" class="panel" aria-label="Settings">
+        <header class="panel-header">
+          <div>
+            <p class="eyebrow">Extension preferences</p>
+            <h2>Settings</h2>
+          </div>
+          <span id="settings-save-state" class="status-pill thin">
+            <span class="status-dot"></span>
+            <span class="status-text">Idle</span>
+          </span>
+        </header>
+
+        <section class="surface">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Queue pacing</p>
+              <h3>Worker behavior</h3>
+            </div>
+          </div>
+          <div class="field-grid">
+            <label class="field">
+              <span>Cooldown (sec)</span>
+              <input id="cooldown" type="number" min="0" max="300" value="60">
+            </label>
+            <label class="field">
+              <span>Max retries</span>
+              <input id="max-retries" type="number" min="0" max="10" value="3">
+            </label>
+            <label class="field">
+              <span>Theme</span>
+              <select id="theme-mode">
+                <option value="system">System</option>
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+              </select>
+            </label>
+          </div>
+          <label class="toggle-row">
+            <div>
+              <strong>Adaptive rate limiting</strong>
+              <p>Back off automatically when ChatGPT starts pushing back.</p>
+            </div>
+            <input id="adaptive-rate-limit" type="checkbox">
+          </label>
+        </section>
+
+        <section class="surface">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Browser-local</p>
+              <h3>Extension toggles</h3>
+            </div>
+          </div>
+          <label class="toggle-row">
+            <div>
+              <strong>Auto-download generated images</strong>
+              <p>Save completed outputs to your PixelQ downloads folder.</p>
+            </div>
+            <input id="auto-download" type="checkbox">
+          </label>
+          <label class="toggle-row">
+            <div>
+              <strong>New thread per image</strong>
+              <p>Start a fresh ChatGPT thread before each generation run.</p>
+            </div>
+            <input id="new-thread" type="checkbox">
+          </label>
+        </section>
+
+        <section class="surface">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Bridge</p>
+              <h3>Desktop sync</h3>
+            </div>
+          </div>
+          <div id="bridge-summary" class="bridge-summary"></div>
+          <p id="settings-mode-note" class="muted-copy"></p>
+        </section>
+      </section>
+    </main>
+
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
