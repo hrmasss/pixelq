@@ -1,0 +1,14 @@
+{
+  "name": "pixelq-devtools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:detector": "node scripts/test-content-detector.mjs",
+    "debug:extension": "node scripts/launch-extension-debug.mjs",
+    "test:e2e:live": "node scripts/run-live-extension-e2e.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.58.2",
+    "playwright-core": "^1.55.0"
+  }
+}
