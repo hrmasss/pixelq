@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "PixelQ",
-  "version": "0.1.0",
-  "version_name": "0.1 alpha",
+  "version": "0.1.1",
+  "version_name": "0.1.1 alpha",
   "description": "Local-first ChatGPT image queue with a matching desktop bridge, API, and MCP tools",
   "permissions": [
     "storage",

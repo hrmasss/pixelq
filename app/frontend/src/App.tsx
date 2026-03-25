@@ -43,7 +43,7 @@ interface RouteMeta {
   description: string;
 }
 
-const APP_VERSION_LABEL = "0.1 alpha";
+const APP_VERSION_LABEL = "0.1.1 alpha";
 
 const routes: RouteMeta[] = [
   { id: "queue", label: "Queue", icon: RiHourglassLine, eyebrow: "Queue Engine", description: "Run and recover queued work." },
@@ -584,7 +584,7 @@ function App() {
               <div className={`state-chip tone-${status.extension_ready ? "good" : status.extension_connected ? "warn" : "bad"}`}>
                 <span>{status.extension_ready ? "Bridge ready" : status.extension_connected ? "Bridge linked" : "Bridge offline"}</span>
               </div>
-              <div className="soft-version-chip">{status.version || "0.1.0-alpha"}</div>
+              <div className="soft-version-chip">{status.version || "0.1.1-alpha"}</div>
             </div>
           </header>
 

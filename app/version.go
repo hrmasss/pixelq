@@ -1,8 +1,8 @@
 package main
 
 const (
-	AppVersion        = "0.1.0"
+	AppVersion        = "0.1.1"
 	AppChannel        = "alpha"
-	AppReleaseVersion = "0.1.0-alpha"
-	AppDisplayVersion = "0.1 alpha"
+	AppReleaseVersion = "0.1.1-alpha"
+	AppDisplayVersion = "0.1.1 alpha"
 )

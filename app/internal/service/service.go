@@ -439,7 +439,7 @@ func (s *Service) Status() map[string]interface{} {
 	stats["asset_count"] = assetCount
 	stats["downloads_inbox"] = s.cfg.DownloadsInbox
 	stats["library_root"] = s.cfg.LibraryRoot
-	stats["version"] = "0.1.0-alpha"
+	stats["version"] = "0.1.1-alpha"
 	return stats
 }
 

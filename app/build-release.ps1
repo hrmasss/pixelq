@@ -1,5 +1,5 @@
 param(
-  [string]$OutputName = "pixelq-desktop-0.1.0-alpha"
+  [string]$OutputName = "pixelq-desktop-0.1.1-alpha"
 )
 
 $ErrorActionPreference = "Stop"

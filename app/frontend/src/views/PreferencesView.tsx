@@ -201,7 +201,7 @@ export function PreferencesView({
             </div>
             <div>
               <span>Release</span>
-              <strong>{status.version || "0.1.0-alpha"}</strong>
+              <strong>{status.version || "0.1.1-alpha"}</strong>
             </div>
           </div>
           <div className="button-row">
